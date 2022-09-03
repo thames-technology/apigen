@@ -1,0 +1,9 @@
+version: v1
+lint:
+  use:
+    - DEFAULT
+    - UNARY_RPC
+    - PACKAGE_NO_IMPORT_CYCLE
+  except:
+    - RPC_REQUEST_RESPONSE_UNIQUE
+    - RPC_RESPONSE_STANDARD_NAME
