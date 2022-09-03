@@ -6,6 +6,7 @@ import "google/protobuf/empty.proto";
 import "{{.PackagePath}}/request_response.proto";
 import "{{.PackagePath}}/resource.proto";
 
+// {{.ResourceName | ToTitle}}Service ...
 service {{.ResourceName | ToTitle}}Service {
   // List{{.ResourcePluralName | ToTitle}} retrieves a list of {{.ResourcePluralName}} from the server.
   rpc List{{.ResourcePluralName | ToTitle}}(List{{.ResourcePluralName | ToTitle}}Request) returns (List{{.ResourcePluralName | ToTitle}}Response) {}

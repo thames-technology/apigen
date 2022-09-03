@@ -2,8 +2,11 @@ version: v1
 lint:
   use:
     - DEFAULT
+    # Nice to haves
+    - COMMENTS
     - UNARY_RPC
     - PACKAGE_NO_IMPORT_CYCLE
   except:
+    # Must be ommitted to comply with the Google Cloud API style guide
     - RPC_REQUEST_RESPONSE_UNIQUE
     - RPC_RESPONSE_STANDARD_NAME

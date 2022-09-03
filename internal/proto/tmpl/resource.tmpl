@@ -4,6 +4,7 @@ package {{.Package}};
 
 import "google/protobuf/timestamp.proto";
 
+// The default {{.ResourceName | ToTitle}} resource representation.
 message {{.ResourceName | ToTitle}} {
   // The mult-segment resource name.
   string name = 1;

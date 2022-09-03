@@ -4,6 +4,7 @@ package acme.book.v1;
 
 import "google/protobuf/timestamp.proto";
 
+// The default Book resource representation.
 message Book {
   // The mult-segment resource name.
   string name = 1;
@@ -20,5 +21,5 @@ message Book {
   // The display name for the book.
   string display_name = 5;
 
-// Add custom fields below...
+  // Add custom fields below...
 }

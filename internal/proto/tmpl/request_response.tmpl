@@ -5,6 +5,7 @@ package {{.Package}};
 import "google/protobuf/field_mask.proto";
 import "{{.PackagePath}}/resource.proto";
 
+// The standard List request definition.
 message List{{.ResourcePluralName | ToTitle}}Request {
   // The parent resource name, for example, "{{.ParentPluralName}}/{{.ParentName}}1", or empty.
   string parent = 1;
@@ -22,6 +23,7 @@ message List{{.ResourcePluralName | ToTitle}}Request {
   string filter = 5;
 }
 
+// The standard List response definition.
 message List{{.ResourcePluralName | ToTitle}}Response {
   // The retrieved list of {{.ResourcePluralName}}.
   repeated {{.ResourceName | ToTitle}} {{.ResourcePluralName}} = 1;
@@ -30,11 +32,13 @@ message List{{.ResourcePluralName | ToTitle}}Response {
   string next_page_token = 2;
 }
 
+// The standard Get request definition.
 message Get{{.ResourceName | ToTitle}}Request {
   // The multi-segment resource name of the requested {{.ResourceName}}, for example, "{{.ParentPluralName}}/{{.ParentName}}1/{{.ResourcePluralName}}/{{.ResourceName}}2".
   string name = 1;
 }
 
+// The standard Create request definition.
 message Create{{.ResourceName | ToTitle}}Request {
   // The parent resource name where the {{.ResourceName}} is to be created, for example, "{{.ParentPluralName}}/{{.ParentName}}1", or empty.
   string parent = 1;
@@ -46,6 +50,7 @@ message Create{{.ResourceName | ToTitle}}Request {
   {{.ResourceName | ToTitle}} {{.ResourceName}} = 3;
 }
 
+// The standard Update request definition.
 message Update{{.ResourceName | ToTitle}}Request {
   // The {{.ResourceName}} resource which replaces the resource on the server.
   {{.ResourceName | ToTitle}} {{.ResourceName}} = 1;
@@ -54,6 +59,7 @@ message Update{{.ResourceName | ToTitle}}Request {
   google.protobuf.FieldMask update_mask = 2;
 }
 
+// The standard Delete request definition.
 message Delete{{.ResourceName | ToTitle}}Request {
   // The multi-segment resource name of the {{.ResourceName}} to be deleted, for example, "{{.ParentPluralName}}/{{.ParentName}}1/{{.ResourcePluralName}}/{{.ResourceName}}2".
   string name = 1;

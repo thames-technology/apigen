@@ -21,6 +21,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// The default Book resource representation.
 type Book struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
