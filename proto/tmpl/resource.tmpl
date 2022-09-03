@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package {{.Package}};
+
+import "google/protobuf/timestamp.proto";
+
+message {{.ResourceName | ToTitle}} {
+  // The mult-segment resource name.
+  string name = 1;
+  // The unique {{.ResourceName}} id.
+  string uid = 2;
+  // Indicates when the {{.ResourceName}} was created.
+  google.protobuf.Timestamp create_time = 3;
+  // Indicates when the {{.ResourceName}} was last updated.
+  google.protobuf.Timestamp update_time = 4;
+  // The display name for the {{.ResourceName}}.
+  string display_name = 5;
+  // Add custom fields below...
+}
