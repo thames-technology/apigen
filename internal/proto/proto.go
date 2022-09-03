@@ -22,10 +22,11 @@ THE SOFTWARE.
 package proto
 
 import (
-	"fmt"
 	"io"
 	"os"
 	"text/template"
+
+	"github.com/slavovojacek/cloudstd/logger"
 )
 
 type ProtoTemplate struct {
@@ -37,7 +38,7 @@ type ProtoTemplate struct {
 func NewProtoTemplate(pkg, resource, resources string) *ProtoTemplate {
 	data := newTemplateData(pkg, resource, resources)
 
-	fmt.Printf("using template data %v", data)
+	logger.Default().Infof("using template data %v", data)
 
 	templates := [3]*template.Template{
 		newResourceTemplate(),
@@ -55,7 +56,7 @@ func NewProtoTemplate(pkg, resource, resources string) *ProtoTemplate {
 func (t *ProtoTemplate) WriteFiles() error {
 	pkgPath := t.data.PackagePath
 
-	fmt.Printf("creating directory %s", pkgPath)
+	logger.Default().Infof("creating directory %s", pkgPath)
 
 	if err := os.MkdirAll(pkgPath, 0770); err != nil {
 		return err

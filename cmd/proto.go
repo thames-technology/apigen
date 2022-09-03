@@ -25,7 +25,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/slavovojacek/cloudstd/proto"
+	"github.com/slavovojacek/cloudstd/internal/proto"
 	"github.com/spf13/cobra"
 )
 

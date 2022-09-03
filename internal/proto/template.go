@@ -27,6 +27,7 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/slavovojacek/cloudstd/logger"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 )
@@ -85,7 +86,7 @@ func newTemplateData(pkg, resourceName, resourcePluralName string) *templateData
 func writeTemplate(tmpl *template.Template, data *templateData) error {
 	path := fmt.Sprintf("%s/%s", data.PackagePath, tmpl.Name())
 
-	fmt.Printf("writing file %s", path) // TODO: abort or warn if already exists?
+	logger.Default().Infof("writing file %s", path) // TODO: abort or warn if already exists?
 
 	wr, err := os.Create(path)
 	if err != nil {
