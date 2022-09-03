@@ -41,8 +41,8 @@ var protoCmd = &cobra.Command{
 			pkg            = args[0]
 			resource       = args[1]
 			resourcePlural = fmt.Sprintf("%ss", resource)
-			parent         = "thing"
-			parentPlural   = "things"
+			parent         = "example"
+			parentPlural   = "examples"
 		)
 
 		// If the resource-plural arg is specified, use the provided value instead of the default value.
