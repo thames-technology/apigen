@@ -37,27 +37,34 @@ var protoCmd = &cobra.Command{
 	Short: "Create standard Protobuf service definition",
 	Args:  cobra.RangeArgs(2, 5),
 	RunE: func(cmd *cobra.Command, args []string) error {
+		pkg := args[0]
+		resource := args[1]
+
 		var (
-			pkg            = args[0]
-			resource       = args[1]
-			resourcePlural = fmt.Sprintf("%ss", resource)
-			parent         = "example"
-			parentPlural   = "examples"
+			parent         string
+			resourcePlural string
+			parentPlural   string
 		)
 
 		// If the resource-plural arg is specified, use the provided value instead of the default value.
 		if len(args) >= 3 {
 			resourcePlural = args[2]
+		} else {
+			resourcePlural = fmt.Sprintf("%ss", resource)
 		}
 
 		// If the parent arg is specified, use the provided value instead of the default value.
 		if len(args) >= 4 {
 			parent = args[3]
+		} else {
+			parent = "example"
 		}
 
 		// If the parent-plural arg is specified, use the provided value instead of the default value.
-		if len(args) == 5 {
+		if len(args) >= 5 {
 			parentPlural = args[4]
+		} else {
+			parentPlural = fmt.Sprintf("%ss", parent)
 		}
 
 		tmpl := proto.NewProtoTemplate(pkg, resource, resourcePlural, parent, parentPlural)
