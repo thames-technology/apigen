@@ -1,23 +1,23 @@
 syntax = "proto3";
 
-package {{.Package}};
+package acme.book.v1;
 
 import "google/protobuf/timestamp.proto";
 
-message {{.ResourceName | ToTitle}} {
+message Book {
   // The mult-segment resource name.
   string name = 1;
 
-  // The unique {{.ResourceName}} id.
+  // The unique book id.
   string uid = 2;
 
-  // Indicates when the {{.ResourceName}} was created.
+  // Indicates when the book was created.
   google.protobuf.Timestamp create_time = 3;
 
-  // Indicates when the {{.ResourceName}} was last updated.
+  // Indicates when the book was last updated.
   google.protobuf.Timestamp update_time = 4;
 
-  // The display name for the {{.ResourceName}}.
+  // The display name for the book.
   string display_name = 5;
 
   // Add custom fields below...

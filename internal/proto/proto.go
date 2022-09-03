@@ -35,8 +35,8 @@ type ProtoTemplate struct {
 }
 
 // NewProtoTemplate creates the necessary template files and template data using the provided parameters.
-func NewProtoTemplate(pkg, resource, resources string) *ProtoTemplate {
-	data := newTemplateData(pkg, resource, resources)
+func NewProtoTemplate(pkg, resource, resourcePlural, parent, parentPlural string) *ProtoTemplate {
+	data := newTemplateData(pkg, resource, resourcePlural, parent, parentPlural)
 
 	logger.Default().Infof("using template data %v", data)
 

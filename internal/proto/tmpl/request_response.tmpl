@@ -6,14 +6,18 @@ import "google/protobuf/field_mask.proto";
 import "{{.PackagePath}}/resource.proto";
 
 message List{{.ResourcePluralName | ToTitle}}Request {
-  // The parent resource name, for example, "trees/tree1", or empty.
+  // The parent resource name, for example, "{{.ParentPluralName}}/{{.ParentName}}1", or empty.
   string parent = 1;
+
   // The maximum number of items to return.
   int32 page_size = 2;
+
   // The next_page_token value returned from a previous List request, if any.
   string page_token = 3;
+
   // The sort order for the items to return, or empty. See https://google.aip.dev/132#ordering.
   string order_by = 4;
+
   // The filter for the items to return, or empty. See https://google.aip.dev/132#filtering.
   string filter = 5;
 }
@@ -21,20 +25,23 @@ message List{{.ResourcePluralName | ToTitle}}Request {
 message List{{.ResourcePluralName | ToTitle}}Response {
   // The retrieved list of {{.ResourcePluralName}}.
   repeated {{.ResourceName | ToTitle}} {{.ResourcePluralName}} = 1;
+
   // Token to retrieve the next page of results, or empty if there are no more results in the list.
   string next_page_token = 2;
 }
 
 message Get{{.ResourceName | ToTitle}}Request {
-  // The multi-segment resource name of the requested {{.ResourceName}}, for example, "trees/tree1/{{.ResourcePluralName}}/{{.ResourceName}}2".
+  // The multi-segment resource name of the requested {{.ResourceName}}, for example, "{{.ParentPluralName}}/{{.ParentName}}1/{{.ResourcePluralName}}/{{.ResourceName}}2".
   string name = 1;
 }
 
 message Create{{.ResourceName | ToTitle}}Request {
-  // The parent resource name where the {{.ResourceName}} is to be created, for example, "trees/tree1", or empty.
+  // The parent resource name where the {{.ResourceName}} is to be created, for example, "{{.ParentPluralName}}/{{.ParentName}}1", or empty.
   string parent = 1;
+
   // The unique id to use for this {{.ResourceName}}, or empty.
   string uid = 2;
+
   // The {{.ResourceName}} resource to create.
   {{.ResourceName | ToTitle}} {{.ResourceName}} = 3;
 }
@@ -42,11 +49,12 @@ message Create{{.ResourceName | ToTitle}}Request {
 message Update{{.ResourceName | ToTitle}}Request {
   // The {{.ResourceName}} resource which replaces the resource on the server.
   {{.ResourceName | ToTitle}} {{.ResourceName}} = 1;
+
   // The update mask applied to the resource. See https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask.
   google.protobuf.FieldMask update_mask = 2;
 }
 
 message Delete{{.ResourceName | ToTitle}}Request {
-  // The multi-segment resource name of the {{.ResourceName}} to be deleted, for example, "trees/tree1/{{.ResourcePluralName}}/{{.ResourceName}}2".
+  // The multi-segment resource name of the {{.ResourceName}} to be deleted, for example, "{{.ParentPluralName}}/{{.ParentName}}1/{{.ResourcePluralName}}/{{.ResourceName}}2".
   string name = 1;
 }

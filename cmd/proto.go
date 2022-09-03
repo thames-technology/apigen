@@ -29,25 +29,40 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var _dryrun bool
+var _flagDryrun bool
 
 // protoCmd represents the proto command
 var protoCmd = &cobra.Command{
-	Use:   "proto [pkg] [resource-name] [resource-plural-name]",
+	Use:   "proto [pkg] [resource] [resource-plural] [parent] [parent-plural]",
 	Short: "Create standard Protobuf service definition",
-	Args:  cobra.RangeArgs(2, 3),
+	Args:  cobra.RangeArgs(2, 5),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		pkg := args[0]
-		resource := args[1]
-		resources := fmt.Sprintf("%ss", resource)
+		var (
+			pkg            = args[0]
+			resource       = args[1]
+			resourcePlural = fmt.Sprintf("%ss", resource)
+			parent         = "thing"
+			parentPlural   = "things"
+		)
 
-		if len(args) == 3 {
-			resources = args[2]
+		// If the resource-plural arg is specified, use the provided value instead of the default value.
+		if len(args) >= 3 {
+			resourcePlural = args[2]
 		}
 
-		tmpl := proto.NewProtoTemplate(pkg, resource, resources)
+		// If the parent arg is specified, use the provided value instead of the default value.
+		if len(args) >= 4 {
+			parent = args[3]
+		}
 
-		if _dryrun {
+		// If the parent-plural arg is specified, use the provided value instead of the default value.
+		if len(args) == 5 {
+			parentPlural = args[4]
+		}
+
+		tmpl := proto.NewProtoTemplate(pkg, resource, resourcePlural, parent, parentPlural)
+
+		if _flagDryrun {
 			writer := os.Stdout
 			defer writer.Close()
 			return tmpl.Write(writer)
@@ -59,5 +74,5 @@ var protoCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(protoCmd)
-	protoCmd.Flags().BoolVar(&_dryrun, "dry-run", false, "Dry run")
+	protoCmd.Flags().BoolVar(&_flagDryrun, "dry-run", false, "Execute as dry run")
 }

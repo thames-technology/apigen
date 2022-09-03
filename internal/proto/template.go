@@ -37,6 +37,8 @@ type templateData struct {
 	PackagePath        string
 	ResourceName       string
 	ResourcePluralName string
+	ParentName         string
+	ParentPluralName   string
 }
 
 var caser = cases.Title(language.Und)
@@ -71,15 +73,17 @@ func newTemplate(filename, name string) *template.Template {
 	)
 }
 
-func newTemplateData(pkg, resourceName, resourcePluralName string) *templateData {
+func newTemplateData(pkg, resource, resourcePlural, parent, parentPlural string) *templateData {
 	pkgSegments := strings.Split(pkg, ".")
 	pkgPath := strings.Join(pkgSegments, "/")
 
 	return &templateData{
 		Package:            strings.ToLower(pkg),
 		PackagePath:        strings.ToLower(pkgPath),
-		ResourceName:       strings.ToLower(resourceName),
-		ResourcePluralName: strings.ToLower(resourcePluralName),
+		ResourceName:       strings.ToLower(resource),
+		ResourcePluralName: strings.ToLower(resourcePlural),
+		ParentName:         strings.ToLower(parent),
+		ParentPluralName:   strings.ToLower(parentPlural),
 	}
 }
 
