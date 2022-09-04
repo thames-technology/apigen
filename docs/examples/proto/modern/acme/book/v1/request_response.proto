@@ -14,6 +14,8 @@ message ListBooksRequest {
   uint64 start = 2;
   // The maximum number of books to return.
   uint64 max_size = 3;
+  // The unique id of the parent shelf for which to list the books.
+  string shelf_id = 4;
 }
 
 // The standard List response definition.
@@ -32,19 +34,21 @@ message GetBookRequest {
 
 // The standard Get response definition.
 message GetBookResponse {
-  // The retrieved book resource.
+  // The retrieved book.
   Book book = 1;
 }
 
 // The standard Create request definition.
 message CreateBookRequest {
-  // The book resource to create.
+  // The book to create.
   Book book = 1;
+  // The unique id of the parent shelf where the book is to be created.
+  string shelf_id = 4;
 }
 
 // The standard Create response definition.
 message CreateBookResponse {
-  // The created book resource.
+  // The created book.
   Book book = 1;
 }
 
@@ -52,15 +56,15 @@ message CreateBookResponse {
 message UpdateBookRequest {
   // The id of the book to be updated.
   string id = 1;
-  // The book resource which replaces the resource on the server.
+  // The book which replaces the book on the server.
   Book book = 2;
-  // The update mask applied to the resource. See https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask.
+  // The update mask applied to the book. See https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask.
   google.protobuf.FieldMask update_mask = 3;
 }
 
 // The standard Update response definition.
 message UpdateBookResponse {
-  // The updated book resource.
+  // The updated book.
   Book book = 1;
 }
 
@@ -72,6 +76,6 @@ message DeleteBookRequest {
 
 // The standard Delete response definition.
 message DeleteBookResponse {
-  // The deleted book resource.
+  // The deleted book.
   Book book = 1;
 }

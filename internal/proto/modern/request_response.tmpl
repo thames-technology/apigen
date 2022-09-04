@@ -14,6 +14,8 @@ message List{{.ResourcePluralName | ToTitle}}Request {
   uint64 start = 2;
   // The maximum number of {{.ResourcePluralName}} to return.
   uint64 max_size = 3;
+  // The unique id of the parent {{.ParentName}} for which to list the {{.ResourcePluralName}}.
+  string {{.ParentName}}_id = 4;
 }
 
 // The standard List response definition.
@@ -32,19 +34,21 @@ message Get{{.ResourceName | ToTitle}}Request {
 
 // The standard Get response definition.
 message Get{{.ResourceName | ToTitle}}Response {
-  // The retrieved {{.ResourceName}} resource.
+  // The retrieved {{.ResourceName}}.
   {{.ResourceName | ToTitle}} {{.ResourceName}} = 1;
 }
 
 // The standard Create request definition.
 message Create{{.ResourceName | ToTitle}}Request {
-  // The {{.ResourceName}} resource to create.
+  // The {{.ResourceName}} to create.
   {{.ResourceName | ToTitle}} {{.ResourceName}} = 1;
+  // The unique id of the parent {{.ParentName}} where the {{.ResourceName}} is to be created.
+  string {{.ParentName}}_id = 4;
 }
 
 // The standard Create response definition.
 message Create{{.ResourceName | ToTitle}}Response {
-  // The created {{.ResourceName}} resource.
+  // The created {{.ResourceName}}.
   {{.ResourceName | ToTitle}} {{.ResourceName}} = 1;
 }
 
@@ -52,15 +56,15 @@ message Create{{.ResourceName | ToTitle}}Response {
 message Update{{.ResourceName | ToTitle}}Request {
   // The id of the {{.ResourceName}} to be updated.
   string id = 1;
-  // The {{.ResourceName}} resource which replaces the resource on the server.
+  // The {{.ResourceName}} which replaces the {{.ResourceName}} on the server.
   {{.ResourceName | ToTitle}} {{.ResourceName}} = 2;
-  // The update mask applied to the resource. See https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask.
+  // The update mask applied to the {{.ResourceName}}. See https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask.
   google.protobuf.FieldMask update_mask = 3;
 }
 
 // The standard Update response definition.
 message Update{{.ResourceName | ToTitle}}Response {
-  // The updated {{.ResourceName}} resource.
+  // The updated {{.ResourceName}}.
   {{.ResourceName | ToTitle}} {{.ResourceName}} = 1;
 }
 
@@ -72,6 +76,6 @@ message Delete{{.ResourceName | ToTitle}}Request {
 
 // The standard Delete response definition.
 message Delete{{.ResourceName | ToTitle}}Response {
-  // The deleted {{.ResourceName}} resource.
+  // The deleted {{.ResourceName}}.
   {{.ResourceName | ToTitle}} {{.ResourceName}} = 1;
 }

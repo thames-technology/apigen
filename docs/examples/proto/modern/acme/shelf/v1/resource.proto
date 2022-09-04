@@ -12,7 +12,9 @@ message Shelf {
   google.protobuf.Timestamp create_time = 2;
   // Indicates when the shelf was last updated.
   google.protobuf.Timestamp update_time = 3;
+  // The unique id of the parent example resource.
+  string example_id = 4;
   // The display name for the shelf.
-  string display_name = 4;
+  string display_name = 5;
   // Add custom fields below...
 }

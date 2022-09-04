@@ -22,9 +22,9 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ShelfServiceClient interface {
-	// ListShelves retrieves a list of shelves from the server.
+	// ListShelves retrieves a list of shelves resources from the server.
 	ListShelves(ctx context.Context, in *ListShelvesRequest, opts ...grpc.CallOption) (*ListShelvesResponse, error)
-	// GetShelf retrieves a single shelf from the server.
+	// GetShelf retrieves a single shelf resource from the server.
 	GetShelf(ctx context.Context, in *GetShelfRequest, opts ...grpc.CallOption) (*GetShelfResponse, error)
 	// CreateShelf creates a new shelf resource on the server.
 	CreateShelf(ctx context.Context, in *CreateShelfRequest, opts ...grpc.CallOption) (*CreateShelfResponse, error)
@@ -91,9 +91,9 @@ func (c *shelfServiceClient) DeleteShelf(ctx context.Context, in *DeleteShelfReq
 // All implementations should embed UnimplementedShelfServiceServer
 // for forward compatibility
 type ShelfServiceServer interface {
-	// ListShelves retrieves a list of shelves from the server.
+	// ListShelves retrieves a list of shelves resources from the server.
 	ListShelves(context.Context, *ListShelvesRequest) (*ListShelvesResponse, error)
-	// GetShelf retrieves a single shelf from the server.
+	// GetShelf retrieves a single shelf resource from the server.
 	GetShelf(context.Context, *GetShelfRequest) (*GetShelfResponse, error)
 	// CreateShelf creates a new shelf resource on the server.
 	CreateShelf(context.Context, *CreateShelfRequest) (*CreateShelfResponse, error)

@@ -6,9 +6,9 @@ import "acme/book/v1/request_response.proto";
 
 // BookService defines methods for managing books.
 service BookService {
-  // ListBooks retrieves a list of books from the server.
+  // ListBooks retrieves a list of books resources from the server.
   rpc ListBooks(ListBooksRequest) returns (ListBooksResponse) {}
-  // GetBook retrieves a single book from the server.
+  // GetBook retrieves a single book resource from the server.
   rpc GetBook(GetBookRequest) returns (GetBookResponse) {}
   // CreateBook creates a new book resource on the server.
   rpc CreateBook(CreateBookRequest) returns (CreateBookResponse) {}
