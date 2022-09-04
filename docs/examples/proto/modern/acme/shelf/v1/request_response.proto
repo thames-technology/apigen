@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+package acme.shelf.v1;
+
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+import "acme/shelf/v1/resource.proto";
+
+// The standard List request definition.
+message ListShelvesRequest {
+  // Only retrieve shelves from before this time.
+  google.protobuf.Timestamp before_time = 1;
+  // The start index for pagination.
+  uint64 start = 2;
+  // The maximum number of shelves to return.
+  uint64 max_size = 3;
+}
+
+// The standard List response definition.
+message ListShelvesResponse {
+  // The retrieved list of shelves.
+  repeated Shelf shelves = 1;
+  // True if more shelves are available.
+  bool next = 2;
+}
+
+// The standard Get request definition.
+message GetShelfRequest {
+  // The id of the requested shelf.
+  string id = 1;
+}
+
+// The standard Get response definition.
+message GetShelfResponse {
+  // The retrieved shelf resource.
+  Shelf shelf = 1;
+}
+
+// The standard Create request definition.
+message CreateShelfRequest {
+  // The shelf resource to create.
+  Shelf shelf = 1;
+}
+
+// The standard Create response definition.
+message CreateShelfResponse {
+  // The created shelf resource.
+  Shelf shelf = 1;
+}
+
+// The standard Update request definition.
+message UpdateShelfRequest {
+  // The id of the shelf to be updated.
+  string id = 1;
+  // The shelf resource which replaces the resource on the server.
+  Shelf shelf = 2;
+  // The update mask applied to the resource. See https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask.
+  google.protobuf.FieldMask update_mask = 3;
+}
+
+// The standard Update response definition.
+message UpdateShelfResponse {
+  // The updated shelf resource.
+  Shelf shelf = 1;
+}
+
+// The standard Delete request definition.
+message DeleteShelfRequest {
+  // The id of the shelf to be deleted.
+  string id = 1;
+}
+
+// The standard Delete response definition.
+message DeleteShelfResponse {
+  // The deleted shelf resource.
+  Shelf shelf = 1;
+}

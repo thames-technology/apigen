@@ -22,54 +22,46 @@ THE SOFTWARE.
 package cmd
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/slavovojacek/cloudstd/internal/proto"
 	"github.com/spf13/cobra"
 )
 
-var _flagDryrun bool
+var (
+	packageName         string
+	resourceNames       []string
+	parentResourceNames []string
+	dryrun              bool
+	googleStyleguide    bool
+)
+
+var (
+	styleguide = "modern"
+)
 
 // protoCmd represents the proto command
 var protoCmd = &cobra.Command{
-	Use:   "proto [pkg] [resource] [resource-plural] [parent] [parent-plural]",
+	Use:   "proto",
 	Short: "Create standard Protobuf service definition",
-	Args:  cobra.RangeArgs(2, 5),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		pkg := args[0]
-		resource := args[1]
-
-		var (
-			parent         string
-			resourcePlural string
-			parentPlural   string
-		)
-
-		// If the resource-plural arg is specified, use the provided value instead of the default value.
-		if len(args) >= 3 {
-			resourcePlural = args[2]
-		} else {
-			resourcePlural = fmt.Sprintf("%ss", resource)
+		resource, err := proto.NewResourceName(resourceNames...)
+		if err != nil {
+			return err
 		}
 
-		// If the parent arg is specified, use the provided value instead of the default value.
-		if len(args) >= 4 {
-			parent = args[3]
-		} else {
-			parent = "example"
+		parentResource, err := proto.NewResourceName(parentResourceNames...)
+		if err != nil {
+			return err
 		}
 
-		// If the parent-plural arg is specified, use the provided value instead of the default value.
-		if len(args) >= 5 {
-			parentPlural = args[4]
-		} else {
-			parentPlural = fmt.Sprintf("%ss", parent)
+		if googleStyleguide {
+			styleguide = "google"
 		}
 
-		tmpl := proto.NewProtoTemplate(pkg, resource, resourcePlural, parent, parentPlural)
+		tmpl := proto.NewProtoTemplate(packageName, resource, parentResource, styleguide)
 
-		if _flagDryrun {
+		if dryrun {
 			writer := os.Stdout
 			defer writer.Close()
 			return tmpl.Write(writer)
@@ -81,5 +73,11 @@ var protoCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(protoCmd)
-	protoCmd.Flags().BoolVar(&_flagDryrun, "dry-run", false, "Execute as dry run")
+	protoCmd.Flags().StringVar(&packageName, "package", "", "package name, for example 'acme.resource.v1'")
+	protoCmd.MarkFlagRequired("package")
+	protoCmd.Flags().StringSliceVar(&resourceNames, "resource", []string{}, "resource name configuration, for example 'book'")
+	protoCmd.MarkFlagRequired("resource")
+	protoCmd.Flags().StringSliceVar(&parentResourceNames, "parent", []string{"example"}, "optional parent name configuration, for example 'shelf,shelves'")
+	protoCmd.Flags().BoolVar(&dryrun, "dry-run", false, "execute as a dry run")
+	protoCmd.Flags().BoolVar(&googleStyleguide, "google", false, "use the google styleguide")
 }

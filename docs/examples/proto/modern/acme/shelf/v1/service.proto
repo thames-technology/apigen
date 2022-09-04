@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package acme.shelf.v1;
+
+import "acme/shelf/v1/request_response.proto";
+
+// ShelfService defines methods for managing shelves.
+service ShelfService {
+  // ListShelves retrieves a list of shelves from the server.
+  rpc ListShelves(ListShelvesRequest) returns (ListShelvesResponse) {}
+  // GetShelf retrieves a single shelf from the server.
+  rpc GetShelf(GetShelfRequest) returns (GetShelfResponse) {}
+  // CreateShelf creates a new shelf resource on the server.
+  rpc CreateShelf(CreateShelfRequest) returns (CreateShelfResponse) {}
+  // UpdateShelf updates the shelf resource on the server.
+  rpc UpdateShelf(UpdateShelfRequest) returns (UpdateShelfResponse) {}
+  // DeleteShelf deletes the shelf resource from the server.
+  rpc DeleteShelf(DeleteShelfRequest) returns (DeleteShelfResponse) {}
+  // Add custom methods below...
+}

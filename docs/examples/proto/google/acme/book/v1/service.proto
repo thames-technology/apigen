@@ -6,7 +6,7 @@ import "google/protobuf/empty.proto";
 import "acme/book/v1/request_response.proto";
 import "acme/book/v1/resource.proto";
 
-// BookService ...
+// BookService defines methods for managing books.
 service BookService {
   // ListBooks retrieves a list of books from the server.
   rpc ListBooks(ListBooksRequest) returns (ListBooksResponse) {}

@@ -47,16 +47,16 @@ var funcs = template.FuncMap{
 	"ToTitle": caser.String,
 }
 
-func newResourceTemplate() *template.Template {
-	return newTemplate("tmpl/resource.tmpl", "resource.proto")
+func newResourceTemplate(styleguide string) *template.Template {
+	return newTemplate(styleguide+"/resource.tmpl", "resource.proto")
 }
 
-func newRequestResponseTemplate() *template.Template {
-	return newTemplate("tmpl/request_response.tmpl", "request_response.proto")
+func newRequestResponseTemplate(styleguide string) *template.Template {
+	return newTemplate(styleguide+"/request_response.tmpl", "request_response.proto")
 }
 
-func newServiceTemplate() *template.Template {
-	return newTemplate("tmpl/service.tmpl", "service.proto")
+func newServiceTemplate(styleguide string) *template.Template {
+	return newTemplate(styleguide+"/service.tmpl", "service.proto")
 }
 
 func newTemplate(filename, name string) *template.Template {
@@ -73,17 +73,17 @@ func newTemplate(filename, name string) *template.Template {
 	)
 }
 
-func newTemplateData(pkg, resource, resourcePlural, parent, parentPlural string) *templateData {
+func newTemplateData(pkg string, resource, parentResource *resourceName) *templateData {
 	pkgSegments := strings.Split(pkg, ".")
 	pkgPath := strings.Join(pkgSegments, "/")
 
 	return &templateData{
 		Package:            strings.ToLower(pkg),
 		PackagePath:        strings.ToLower(pkgPath),
-		ResourceName:       strings.ToLower(resource),
-		ResourcePluralName: strings.ToLower(resourcePlural),
-		ParentName:         strings.ToLower(parent),
-		ParentPluralName:   strings.ToLower(parentPlural),
+		ResourceName:       strings.ToLower(resource.singular),
+		ResourcePluralName: strings.ToLower(resource.plural),
+		ParentName:         strings.ToLower(parentResource.singular),
+		ParentPluralName:   strings.ToLower(parentResource.plural),
 	}
 }
 

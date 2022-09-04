@@ -21,7 +21,34 @@ THE SOFTWARE.
 */
 package proto
 
-import "embed"
+import (
+	"errors"
+	"fmt"
+)
 
-//go:embed google/*.tmpl modern/*.tmpl
-var content embed.FS
+type resourceName struct {
+	singular string
+	plural   string
+}
+
+var (
+	ErrNotEnoughValues = errors.New("must provide at least one value")
+)
+
+func NewResourceName(names ...string) (*resourceName, error) {
+	if len(names) == 0 {
+		return nil, ErrNotEnoughValues
+	}
+
+	s := names[0]
+	p := fmt.Sprintf("%ss", s)
+
+	if len(names) > 1 {
+		p = names[1]
+	}
+
+	return &resourceName{
+		singular: s,
+		plural:   p,
+	}, nil
+}

@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package acme.shelf.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// The default Shelf resource representation.
+message Shelf {
+  // The mult-segment resource name.
+  string name = 1;
+
+  // The unique shelf id.
+  string uid = 2;
+
+  // Indicates when the shelf was created.
+  google.protobuf.Timestamp create_time = 3;
+
+  // Indicates when the shelf was last updated.
+  google.protobuf.Timestamp update_time = 4;
+
+  // The display name for the shelf.
+  string display_name = 5;
+
+  // Add custom fields below...
+}
