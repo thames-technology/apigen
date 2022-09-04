@@ -1,4 +1,4 @@
-## 🍬 cloudstd 🍬
+# cloudstd
 
 Generate Protobuf service definitions conforming to popular style guides:
 
@@ -6,13 +6,13 @@ Generate Protobuf service definitions conforming to popular style guides:
 - [Uber Protobuf Style Guide V2](https://github.com/uber/prototool/blob/dev/style/README.md)
 - [Google Cloud API Design Guide](https://cloud.google.com/apis/design)
 
-### Installation
+## Installation
 
 ```sh
 go install github.com/slavovojacek/cloudstd@latest
 ```
 
-### Usage
+## Usage
 
 ### Default (modern, simple) styleguide
 
