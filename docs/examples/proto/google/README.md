@@ -11,4 +11,4 @@ The Go code was generated using the following command:
 > buf generate
 ```
 
-If you're using [`buf`](https://docs.buf.build/introduction) with the [`DEFAULT`](https://docs.buf.build/lint/rules#default) lint configuration, please take note of the overrides in [buf.yaml](./buf.yaml) to make the linter happy.
+If you're using [`buf`](https://docs.buf.build/introduction) with the [`DEFAULT`](https://docs.buf.build/lint/rules#default) lint configuration, please take note of the overrides in [buf.yaml](buf.yaml) to make the linter happy.

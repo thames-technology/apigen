@@ -19,9 +19,11 @@ go install github.com/slavovojacek/cloudstd@latest
 This style is based on [Buf Style Guide](https://docs.buf.build/best-practices/style-guide) and [Uber Protobuf Style Guide V2](https://github.com/uber/prototool/blob/dev/style/README.md).
 
 ```sh
-proto> cloudstd proto "acme.shelf.v1" shelf shelves
-proto> cloudstd proto "acme.book.v1" book books shelf shelves
+proto> cloudstd proto --package "acme.shelf.v1" --resource "shelf,shelves"
+proto> cloudstd proto --package "acme.book.v1" --resource "book" --parent "shelf,shelves"
 ```
+
+See [docs](docs/examples/proto/modern/README.md) for working example.
 
 Sample `buf.yaml` configuration:
 
@@ -35,15 +37,16 @@ lint:
     - PACKAGE_NO_IMPORT_CYCLE
 ```
 
-
 ### Google styleguide
 
 This style is based on the [Google Cloud API Design Guide](https://cloud.google.com/apis/design).
 
 ```sh
-proto> cloudstd proto "acme.shelf.v1" shelf shelves --google
-proto> cloudstd proto "acme.book.v1" book books shelf shelves --google
+proto> cloudstd proto --package "acme.shelf.v1" --resource "shelf,shelves" --google
+proto> cloudstd proto --package "acme.book.v1" --resource "book" --parent "shelf,shelves" --google
 ```
+
+See [docs](docs/examples/proto/google/README.md) for working example.
 
 Sample `buf.yaml` configuration:
 
