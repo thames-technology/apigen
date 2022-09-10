@@ -8,14 +8,16 @@ import "{{.PackagePath}}/resource.proto";
 
 // The standard List request definition.
 message List{{.ResourcePluralName | ToTitle}}Request {
-  // Only retrieve {{.ResourcePluralName}} from before this time.
-  google.protobuf.Timestamp before_time = 1;
+  // Only retrieve {{.ResourcePluralName}} after this time.
+  google.protobuf.Timestamp after_time = 1;
+  // Only retrieve {{.ResourcePluralName}} before this time.
+  google.protobuf.Timestamp before_time = 2;
   // The start index for pagination.
-  uint64 start = 2;
+  uint64 start = 3;
   // The maximum number of {{.ResourcePluralName}} to return.
-  uint64 max_size = 3;
+  uint64 max_size = 4;
   // The unique id of the parent {{.ParentName}} for which to list the {{.ResourcePluralName}}.
-  string {{.ParentName}}_id = 4;
+  string {{.ParentName}}_id = 5;
 }
 
 // The standard List response definition.
