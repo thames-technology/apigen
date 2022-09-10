@@ -1,6 +1,6 @@
 # cloudstd
 
-Generate Protobuf service definitions conforming to popular style guides:
+Generate Protobuf service definitions conforming to popular design guides:
 
 - [Buf Style Guide](https://docs.buf.build/best-practices/style-guide)
 - [Uber Protobuf Style Guide V2](https://github.com/uber/prototool/blob/dev/style/README.md)
