@@ -23,7 +23,7 @@ proto> cloudstd proto --package "acme.shelf.v1" --resource "shelf,shelves"
 proto> cloudstd proto --package "acme.book.v1" --resource "book" --parent "shelf,shelves"
 ```
 
-See [example docs](docs/examples/proto/modern/README.md) for working example.
+The generated code can be found [in the docs](docs/examples/proto/modern/README.md).
 
 ### Google style
 
@@ -34,4 +34,4 @@ proto> cloudstd proto --package "acme.shelf.v1" --resource "shelf,shelves" --goo
 proto> cloudstd proto --package "acme.book.v1" --resource "book" --parent "shelf,shelves" --google
 ```
 
-See [example docs](docs/examples/proto/google/README.md) for working example.
+The generated code can be found [in the docs](docs/examples/proto/google/README.md).

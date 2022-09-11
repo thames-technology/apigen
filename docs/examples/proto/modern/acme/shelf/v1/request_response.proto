@@ -8,14 +8,16 @@ import "acme/shelf/v1/resource.proto";
 
 // The standard List request definition.
 message ListShelvesRequest {
-  // Only retrieve shelves from before this time.
-  google.protobuf.Timestamp before_time = 1;
+  // Only retrieve shelves after this time.
+  google.protobuf.Timestamp after_time = 1;
+  // Only retrieve shelves before this time.
+  google.protobuf.Timestamp before_time = 2;
   // The start index for pagination.
-  uint64 start = 2;
+  uint64 start = 3;
   // The maximum number of shelves to return.
-  uint64 max_size = 3;
+  uint64 max_size = 4;
   // The unique id of the parent example for which to list the shelves.
-  string example_id = 4;
+  string example_id = 5;
 }
 
 // The standard List response definition.

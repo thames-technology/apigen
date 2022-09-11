@@ -8,14 +8,16 @@ import "acme/book/v1/resource.proto";
 
 // The standard List request definition.
 message ListBooksRequest {
-  // Only retrieve books from before this time.
-  google.protobuf.Timestamp before_time = 1;
+  // Only retrieve books after this time.
+  google.protobuf.Timestamp after_time = 1;
+  // Only retrieve books before this time.
+  google.protobuf.Timestamp before_time = 2;
   // The start index for pagination.
-  uint64 start = 2;
+  uint64 start = 3;
   // The maximum number of books to return.
-  uint64 max_size = 3;
+  uint64 max_size = 4;
   // The unique id of the parent shelf for which to list the books.
-  string shelf_id = 4;
+  string shelf_id = 5;
 }
 
 // The standard List response definition.
