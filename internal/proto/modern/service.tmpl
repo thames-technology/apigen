@@ -6,9 +6,9 @@ import "{{.PackagePath}}/request_response.proto";
 
 // {{.ResourceName | ToTitle}}Service defines methods for managing {{.ResourcePluralName}}.
 service {{.ResourceName | ToTitle}}Service {
-  // List{{.ResourcePluralName | ToTitle}} retrieves a list of {{.ResourcePluralName}} resources from the server.
+  // List{{.ResourcePluralName | ToTitle}} retrieves a list of {{.ResourceName}} resources from the server.
   rpc List{{.ResourcePluralName | ToTitle}}(List{{.ResourcePluralName | ToTitle}}Request) returns (List{{.ResourcePluralName | ToTitle}}Response) {}
-  // BatchGet{{.ResourcePluralName | ToTitle}} retrieves multiple {{.ResourcePluralName}} resources from the server.
+  // BatchGet{{.ResourcePluralName | ToTitle}} retrieves multiple {{.ResourceName}} resources from the server.
   rpc BatchGet{{.ResourcePluralName | ToTitle}}(BatchGet{{.ResourcePluralName | ToTitle}}Request) returns (BatchGet{{.ResourcePluralName | ToTitle}}Response) {}
   // Get{{.ResourceName | ToTitle}} retrieves a single {{.ResourceName}} resource from the server.
   rpc Get{{.ResourceName | ToTitle}}(Get{{.ResourceName | ToTitle}}Request) returns (Get{{.ResourceName | ToTitle}}Response) {}

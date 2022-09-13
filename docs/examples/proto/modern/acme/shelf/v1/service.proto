@@ -6,9 +6,9 @@ import "acme/shelf/v1/request_response.proto";
 
 // ShelfService defines methods for managing shelves.
 service ShelfService {
-  // ListShelves retrieves a list of shelves resources from the server.
+  // ListShelves retrieves a list of shelf resources from the server.
   rpc ListShelves(ListShelvesRequest) returns (ListShelvesResponse) {}
-  // BatchGetShelves retrieves multiple shelves resources from the server.
+  // BatchGetShelves retrieves multiple shelf resources from the server.
   rpc BatchGetShelves(BatchGetShelvesRequest) returns (BatchGetShelvesResponse) {}
   // GetShelf retrieves a single shelf resource from the server.
   rpc GetShelf(GetShelfRequest) returns (GetShelfResponse) {}

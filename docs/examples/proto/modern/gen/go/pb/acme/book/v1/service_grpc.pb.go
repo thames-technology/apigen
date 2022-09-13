@@ -22,9 +22,9 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BookServiceClient interface {
-	// ListBooks retrieves a list of books resources from the server.
+	// ListBooks retrieves a list of book resources from the server.
 	ListBooks(ctx context.Context, in *ListBooksRequest, opts ...grpc.CallOption) (*ListBooksResponse, error)
-	// BatchGetBooks retrieves multiple books resources from the server.
+	// BatchGetBooks retrieves multiple book resources from the server.
 	BatchGetBooks(ctx context.Context, in *BatchGetBooksRequest, opts ...grpc.CallOption) (*BatchGetBooksResponse, error)
 	// GetBook retrieves a single book resource from the server.
 	GetBook(ctx context.Context, in *GetBookRequest, opts ...grpc.CallOption) (*GetBookResponse, error)
@@ -102,9 +102,9 @@ func (c *bookServiceClient) DeleteBook(ctx context.Context, in *DeleteBookReques
 // All implementations should embed UnimplementedBookServiceServer
 // for forward compatibility
 type BookServiceServer interface {
-	// ListBooks retrieves a list of books resources from the server.
+	// ListBooks retrieves a list of book resources from the server.
 	ListBooks(context.Context, *ListBooksRequest) (*ListBooksResponse, error)
-	// BatchGetBooks retrieves multiple books resources from the server.
+	// BatchGetBooks retrieves multiple book resources from the server.
 	BatchGetBooks(context.Context, *BatchGetBooksRequest) (*BatchGetBooksResponse, error)
 	// GetBook retrieves a single book resource from the server.
 	GetBook(context.Context, *GetBookRequest) (*GetBookResponse, error)

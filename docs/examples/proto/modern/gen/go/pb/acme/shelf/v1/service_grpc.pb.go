@@ -22,9 +22,9 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ShelfServiceClient interface {
-	// ListShelves retrieves a list of shelves resources from the server.
+	// ListShelves retrieves a list of shelf resources from the server.
 	ListShelves(ctx context.Context, in *ListShelvesRequest, opts ...grpc.CallOption) (*ListShelvesResponse, error)
-	// BatchGetShelves retrieves multiple shelves resources from the server.
+	// BatchGetShelves retrieves multiple shelf resources from the server.
 	BatchGetShelves(ctx context.Context, in *BatchGetShelvesRequest, opts ...grpc.CallOption) (*BatchGetShelvesResponse, error)
 	// GetShelf retrieves a single shelf resource from the server.
 	GetShelf(ctx context.Context, in *GetShelfRequest, opts ...grpc.CallOption) (*GetShelfResponse, error)
@@ -102,9 +102,9 @@ func (c *shelfServiceClient) DeleteShelf(ctx context.Context, in *DeleteShelfReq
 // All implementations should embed UnimplementedShelfServiceServer
 // for forward compatibility
 type ShelfServiceServer interface {
-	// ListShelves retrieves a list of shelves resources from the server.
+	// ListShelves retrieves a list of shelf resources from the server.
 	ListShelves(context.Context, *ListShelvesRequest) (*ListShelvesResponse, error)
-	// BatchGetShelves retrieves multiple shelves resources from the server.
+	// BatchGetShelves retrieves multiple shelf resources from the server.
 	BatchGetShelves(context.Context, *BatchGetShelvesRequest) (*BatchGetShelvesResponse, error)
 	// GetShelf retrieves a single shelf resource from the server.
 	GetShelf(context.Context, *GetShelfRequest) (*GetShelfResponse, error)
