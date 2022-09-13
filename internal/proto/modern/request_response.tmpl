@@ -57,7 +57,7 @@ message Create{{.ResourceName | ToTitle}}Request {
   // The {{.ResourceName}} to create.
   {{.ResourceName | ToTitle}} {{.ResourceName}} = 1;
   // The unique id of the parent {{.ParentName}} where the {{.ResourceName}} is to be created.
-  string {{.ParentName}}_id = 4;
+  string {{.ParentName}}_id = 2;
 }
 
 // The standard Create response definition.

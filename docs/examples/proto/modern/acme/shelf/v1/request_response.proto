@@ -57,7 +57,7 @@ message CreateShelfRequest {
   // The shelf to create.
   Shelf shelf = 1;
   // The unique id of the parent example where the shelf is to be created.
-  string example_id = 4;
+  string example_id = 2;
 }
 
 // The standard Create response definition.

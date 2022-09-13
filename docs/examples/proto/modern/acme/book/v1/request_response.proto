@@ -57,7 +57,7 @@ message CreateBookRequest {
   // The book to create.
   Book book = 1;
   // The unique id of the parent shelf where the book is to be created.
-  string shelf_id = 4;
+  string shelf_id = 2;
 }
 
 // The standard Create response definition.
