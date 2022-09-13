@@ -28,6 +28,18 @@ message List{{.ResourcePluralName | ToTitle}}Response {
   bool next = 2;
 }
 
+// The standard BatchGet request definition.
+message BatchGet{{.ResourcePluralName | ToTitle}}Request {
+  // The ids of the requested {{.ResourcePluralName}}.
+  repeated string ids = 1;
+}
+
+// The standard BatchGet response definition.
+message BatchGet{{.ResourcePluralName | ToTitle}}Response {
+  // The retrieved {{.ResourcePluralName}}.
+  repeated {{.ResourceName | ToTitle}} {{.ResourcePluralName}} = 1;
+}
+
 // The standard Get request definition.
 message Get{{.ResourceName | ToTitle}}Request {
   // The id of the requested {{.ResourceName}}.

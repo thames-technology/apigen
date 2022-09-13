@@ -2,9 +2,9 @@ syntax = "proto3";
 
 package acme.book.v1;
 
+import "acme/book/v1/resource.proto";
 import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
-import "acme/book/v1/resource.proto";
 
 // The standard List request definition.
 message ListBooksRequest {
@@ -26,6 +26,18 @@ message ListBooksResponse {
   repeated Book books = 1;
   // True if more books are available.
   bool next = 2;
+}
+
+// The standard BatchGet request definition.
+message BatchGetBooksRequest {
+  // The ids of the requested books.
+  repeated string ids = 1;
+}
+
+// The standard BatchGet response definition.
+message BatchGetBooksResponse {
+  // The retrieved books.
+  repeated Book books = 1;
 }
 
 // The standard Get request definition.

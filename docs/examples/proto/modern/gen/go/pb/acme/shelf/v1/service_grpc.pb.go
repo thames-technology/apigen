@@ -24,6 +24,8 @@ const _ = grpc.SupportPackageIsVersion7
 type ShelfServiceClient interface {
 	// ListShelves retrieves a list of shelves resources from the server.
 	ListShelves(ctx context.Context, in *ListShelvesRequest, opts ...grpc.CallOption) (*ListShelvesResponse, error)
+	// BatchGetShelves retrieves multiple shelves resources from the server.
+	BatchGetShelves(ctx context.Context, in *BatchGetShelvesRequest, opts ...grpc.CallOption) (*BatchGetShelvesResponse, error)
 	// GetShelf retrieves a single shelf resource from the server.
 	GetShelf(ctx context.Context, in *GetShelfRequest, opts ...grpc.CallOption) (*GetShelfResponse, error)
 	// CreateShelf creates a new shelf resource on the server.
@@ -45,6 +47,15 @@ func NewShelfServiceClient(cc grpc.ClientConnInterface) ShelfServiceClient {
 func (c *shelfServiceClient) ListShelves(ctx context.Context, in *ListShelvesRequest, opts ...grpc.CallOption) (*ListShelvesResponse, error) {
 	out := new(ListShelvesResponse)
 	err := c.cc.Invoke(ctx, "/acme.shelf.v1.ShelfService/ListShelves", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shelfServiceClient) BatchGetShelves(ctx context.Context, in *BatchGetShelvesRequest, opts ...grpc.CallOption) (*BatchGetShelvesResponse, error) {
+	out := new(BatchGetShelvesResponse)
+	err := c.cc.Invoke(ctx, "/acme.shelf.v1.ShelfService/BatchGetShelves", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -93,6 +104,8 @@ func (c *shelfServiceClient) DeleteShelf(ctx context.Context, in *DeleteShelfReq
 type ShelfServiceServer interface {
 	// ListShelves retrieves a list of shelves resources from the server.
 	ListShelves(context.Context, *ListShelvesRequest) (*ListShelvesResponse, error)
+	// BatchGetShelves retrieves multiple shelves resources from the server.
+	BatchGetShelves(context.Context, *BatchGetShelvesRequest) (*BatchGetShelvesResponse, error)
 	// GetShelf retrieves a single shelf resource from the server.
 	GetShelf(context.Context, *GetShelfRequest) (*GetShelfResponse, error)
 	// CreateShelf creates a new shelf resource on the server.
@@ -109,6 +122,9 @@ type UnimplementedShelfServiceServer struct {
 
 func (UnimplementedShelfServiceServer) ListShelves(context.Context, *ListShelvesRequest) (*ListShelvesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListShelves not implemented")
+}
+func (UnimplementedShelfServiceServer) BatchGetShelves(context.Context, *BatchGetShelvesRequest) (*BatchGetShelvesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BatchGetShelves not implemented")
 }
 func (UnimplementedShelfServiceServer) GetShelf(context.Context, *GetShelfRequest) (*GetShelfResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetShelf not implemented")
@@ -148,6 +164,24 @@ func _ShelfService_ListShelves_Handler(srv interface{}, ctx context.Context, dec
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ShelfServiceServer).ListShelves(ctx, req.(*ListShelvesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ShelfService_BatchGetShelves_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BatchGetShelvesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShelfServiceServer).BatchGetShelves(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/acme.shelf.v1.ShelfService/BatchGetShelves",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShelfServiceServer).BatchGetShelves(ctx, req.(*BatchGetShelvesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -234,6 +268,10 @@ var ShelfService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListShelves",
 			Handler:    _ShelfService_ListShelves_Handler,
+		},
+		{
+			MethodName: "BatchGetShelves",
+			Handler:    _ShelfService_BatchGetShelves_Handler,
 		},
 		{
 			MethodName: "GetShelf",

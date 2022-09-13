@@ -16,5 +16,4 @@ message Shelf {
   string example_id = 4;
   // The display name for the shelf.
   string display_name = 5;
-  // Add custom fields below...
 }

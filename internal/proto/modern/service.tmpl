@@ -8,6 +8,8 @@ import "{{.PackagePath}}/request_response.proto";
 service {{.ResourceName | ToTitle}}Service {
   // List{{.ResourcePluralName | ToTitle}} retrieves a list of {{.ResourcePluralName}} resources from the server.
   rpc List{{.ResourcePluralName | ToTitle}}(List{{.ResourcePluralName | ToTitle}}Request) returns (List{{.ResourcePluralName | ToTitle}}Response) {}
+  // BatchGet{{.ResourcePluralName | ToTitle}} retrieves multiple {{.ResourcePluralName}} resources from the server.
+  rpc BatchGet{{.ResourcePluralName | ToTitle}}(BatchGet{{.ResourcePluralName | ToTitle}}Request) returns (BatchGet{{.ResourcePluralName | ToTitle}}Response) {}
   // Get{{.ResourceName | ToTitle}} retrieves a single {{.ResourceName}} resource from the server.
   rpc Get{{.ResourceName | ToTitle}}(Get{{.ResourceName | ToTitle}}Request) returns (Get{{.ResourceName | ToTitle}}Response) {}
   // Create{{.ResourceName | ToTitle}} creates a new {{.ResourceName}} resource on the server.
@@ -16,5 +18,4 @@ service {{.ResourceName | ToTitle}}Service {
   rpc Update{{.ResourceName | ToTitle}}(Update{{.ResourceName | ToTitle}}Request) returns (Update{{.ResourceName | ToTitle}}Response) {}
   // Delete{{.ResourceName | ToTitle}} deletes the {{.ResourceName}} resource from the server.
   rpc Delete{{.ResourceName | ToTitle}}(Delete{{.ResourceName | ToTitle}}Request) returns (Delete{{.ResourceName | ToTitle}}Response) {}
-  // Add custom methods below...
 }

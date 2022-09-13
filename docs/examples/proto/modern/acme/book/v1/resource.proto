@@ -16,5 +16,4 @@ message Book {
   string shelf_id = 4;
   // The display name for the book.
   string display_name = 5;
-  // Add custom fields below...
 }

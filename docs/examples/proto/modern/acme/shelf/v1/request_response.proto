@@ -2,9 +2,9 @@ syntax = "proto3";
 
 package acme.shelf.v1;
 
+import "acme/shelf/v1/resource.proto";
 import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
-import "acme/shelf/v1/resource.proto";
 
 // The standard List request definition.
 message ListShelvesRequest {
@@ -26,6 +26,18 @@ message ListShelvesResponse {
   repeated Shelf shelves = 1;
   // True if more shelves are available.
   bool next = 2;
+}
+
+// The standard BatchGet request definition.
+message BatchGetShelvesRequest {
+  // The ids of the requested shelves.
+  repeated string ids = 1;
+}
+
+// The standard BatchGet response definition.
+message BatchGetShelvesResponse {
+  // The retrieved shelves.
+  repeated Shelf shelves = 1;
 }
 
 // The standard Get request definition.

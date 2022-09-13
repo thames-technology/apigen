@@ -24,6 +24,8 @@ const _ = grpc.SupportPackageIsVersion7
 type BookServiceClient interface {
 	// ListBooks retrieves a list of books resources from the server.
 	ListBooks(ctx context.Context, in *ListBooksRequest, opts ...grpc.CallOption) (*ListBooksResponse, error)
+	// BatchGetBooks retrieves multiple books resources from the server.
+	BatchGetBooks(ctx context.Context, in *BatchGetBooksRequest, opts ...grpc.CallOption) (*BatchGetBooksResponse, error)
 	// GetBook retrieves a single book resource from the server.
 	GetBook(ctx context.Context, in *GetBookRequest, opts ...grpc.CallOption) (*GetBookResponse, error)
 	// CreateBook creates a new book resource on the server.
@@ -45,6 +47,15 @@ func NewBookServiceClient(cc grpc.ClientConnInterface) BookServiceClient {
 func (c *bookServiceClient) ListBooks(ctx context.Context, in *ListBooksRequest, opts ...grpc.CallOption) (*ListBooksResponse, error) {
 	out := new(ListBooksResponse)
 	err := c.cc.Invoke(ctx, "/acme.book.v1.BookService/ListBooks", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bookServiceClient) BatchGetBooks(ctx context.Context, in *BatchGetBooksRequest, opts ...grpc.CallOption) (*BatchGetBooksResponse, error) {
+	out := new(BatchGetBooksResponse)
+	err := c.cc.Invoke(ctx, "/acme.book.v1.BookService/BatchGetBooks", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -93,6 +104,8 @@ func (c *bookServiceClient) DeleteBook(ctx context.Context, in *DeleteBookReques
 type BookServiceServer interface {
 	// ListBooks retrieves a list of books resources from the server.
 	ListBooks(context.Context, *ListBooksRequest) (*ListBooksResponse, error)
+	// BatchGetBooks retrieves multiple books resources from the server.
+	BatchGetBooks(context.Context, *BatchGetBooksRequest) (*BatchGetBooksResponse, error)
 	// GetBook retrieves a single book resource from the server.
 	GetBook(context.Context, *GetBookRequest) (*GetBookResponse, error)
 	// CreateBook creates a new book resource on the server.
@@ -109,6 +122,9 @@ type UnimplementedBookServiceServer struct {
 
 func (UnimplementedBookServiceServer) ListBooks(context.Context, *ListBooksRequest) (*ListBooksResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListBooks not implemented")
+}
+func (UnimplementedBookServiceServer) BatchGetBooks(context.Context, *BatchGetBooksRequest) (*BatchGetBooksResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BatchGetBooks not implemented")
 }
 func (UnimplementedBookServiceServer) GetBook(context.Context, *GetBookRequest) (*GetBookResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBook not implemented")
@@ -148,6 +164,24 @@ func _BookService_ListBooks_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BookServiceServer).ListBooks(ctx, req.(*ListBooksRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BookService_BatchGetBooks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BatchGetBooksRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookServiceServer).BatchGetBooks(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/acme.book.v1.BookService/BatchGetBooks",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookServiceServer).BatchGetBooks(ctx, req.(*BatchGetBooksRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -234,6 +268,10 @@ var BookService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListBooks",
 			Handler:    _BookService_ListBooks_Handler,
+		},
+		{
+			MethodName: "BatchGetBooks",
+			Handler:    _BookService_BatchGetBooks_Handler,
 		},
 		{
 			MethodName: "GetBook",
