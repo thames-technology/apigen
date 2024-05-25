@@ -1,0 +1,115 @@
+{{- $resource := .Resource }}
+{{- $resources := .Resources }}
+{{- $parent := .Parent }}
+{{- $parents := .Parents }}
+{{- $package := .Package }}syntax = "proto3";
+
+package {{ $package }};
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+// =============================================================================
+// Service definition
+// =============================================================================
+
+// The {{ title $resource }}Service defines the standard methods for managing {{ $resources }}.
+service {{ title $resource }}Service {
+  // Creates a new {{ $resource }} in the library.
+  rpc Create{{ title $resource }}(Create{{ title $resource }}Request) returns (Create{{ title $resource }}Response);
+  // Retrieves a {{ $resource }} by its ID.
+  rpc Get{{ title $resource }}(Get{{ title $resource }}Request) returns (Get{{ title $resource }}Response);
+  // Lists {{ $resources }} with pagination support.
+  rpc List{{ title $resources }}(List{{ title $resources }}Request) returns (List{{ title $resources }}Response);
+  // Updates an existing {{ $resource }}.
+  rpc Update{{ title $resource }}(Update{{ title $resource }}Request) returns (Update{{ title $resource }}Response);
+  // Deletes a {{ $resource }} by its ID.
+  rpc Delete{{ title $resource }}(Delete{{ title $resource }}Request) returns (google.protobuf.Empty);
+}
+
+// =============================================================================
+// Service request and response messages
+// =============================================================================
+
+// Request message for Create{{ title $resource }} method.
+message Create{{ title $resource }}Request {
+  // The {{ $resource }} to be created.
+  {{ title $resource }} {{ $resource }} = 1;
+}
+
+// Response message for Create{{ title $resource }} method.
+message Create{{ title $resource }}Response {
+  // The created {{ $resource }}.
+  {{ title $resource }} {{ $resource }} = 1;
+}
+
+// Request message for Get{{ title $resource }} method.
+message Get{{ title $resource }}Request {
+  // ID of the {{ $resource }} to retrieve.
+  string id = 1;
+}
+
+// Response message for Get{{ title $resource }} method.
+message Get{{ title $resource }}Response {
+  // The retrieved {{ $resource }}.
+  {{ title $resource }} {{ $resource }} = 1;
+}
+
+// Request message for List{{ title $resources }} method.
+message List{{ title $resources }}Request {
+  // The maximum number of {{ $resources }} to return.
+  int32 page_size = 1;
+  // The token to retrieve the next page of results.
+  string page_token = 2;
+  // The ID of the parent resource.
+  string parent_id = 3;
+}
+
+// Response message for List{{ title $resources }} method.
+message List{{ title $resources }}Response {
+  // The list of {{ $resources }}.
+  repeated {{ title $resource }} results = 1;
+  // Token to retrieve the next page of results.
+  string next_page_token = 2;
+  // Estimated total number of results.
+  int32 total_results_estimate = 3;
+}
+
+// Request message for Update{{ title $resource }} method.
+message Update{{ title $resource }}Request {
+  // The {{ $resource }} to be updated.
+  {{ title $resource }} {{ $resource }} = 1;
+  // The field mask specifying the fields to update.
+  google.protobuf.FieldMask update_mask = 2;
+}
+
+// Response message for Update{{ title $resource }} method.
+message Update{{ title $resource }}Response {
+  // The updated {{ $resource }}.
+  {{ title $resource }} {{ $resource }} = 1;
+}
+
+// Request message for Delete{{ title $resource }} method.
+message Delete{{ title $resource }}Request {
+  // ID of the {{ $resource }} to delete.
+  string id = 1;
+}
+
+// =============================================================================
+// Resource messages
+// =============================================================================
+
+// The {{ title $resource }} message represents a {{ $resource }} in the library.
+message {{ title $resource }} {
+  // Unique identifier for the {{ $resource }}.
+  string id = 1;
+  // When the {{ $resource }} was created.
+  google.protobuf.Timestamp create_time = 2;
+  // When the {{ $resource }} was last updated.
+  google.protobuf.Timestamp update_time = 3;
+  {{- if and $parent $parents }}
+  // ID of the {{ $parent }} of the {{ $resource }}.
+  string {{ $parent }}_id = 4;
+  {{- end }}
+}

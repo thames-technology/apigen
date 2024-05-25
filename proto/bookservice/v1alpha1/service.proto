@@ -1,0 +1,107 @@
+syntax = "proto3";
+
+package bookservice.v1alpha1;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+// =============================================================================
+// Service definition
+// =============================================================================
+
+// The BookService defines the standard methods for managing books.
+service BookService {
+  // Creates a new book in the library.
+  rpc CreateBook(CreateBookRequest) returns (CreateBookResponse);
+  // Retrieves a book by its ID.
+  rpc GetBook(GetBookRequest) returns (GetBookResponse);
+  // Lists books with pagination support.
+  rpc ListBooks(ListBooksRequest) returns (ListBooksResponse);
+  // Updates an existing book.
+  rpc UpdateBook(UpdateBookRequest) returns (UpdateBookResponse);
+  // Deletes a book by its ID.
+  rpc DeleteBook(DeleteBookRequest) returns (google.protobuf.Empty);
+}
+
+// =============================================================================
+// Service request and response messages
+// =============================================================================
+
+// Request message for CreateBook method.
+message CreateBookRequest {
+  // The book to be created.
+  Book book = 1;
+}
+
+// Response message for CreateBook method.
+message CreateBookResponse {
+  // The created book.
+  Book book = 1;
+}
+
+// Request message for GetBook method.
+message GetBookRequest {
+  // ID of the book to retrieve.
+  string id = 1;
+}
+
+// Response message for GetBook method.
+message GetBookResponse {
+  // The retrieved book.
+  Book book = 1;
+}
+
+// Request message for ListBooks method.
+message ListBooksRequest {
+  // The maximum number of books to return.
+  int32 page_size = 1;
+  // The token to retrieve the next page of results.
+  string page_token = 2;
+  // The ID of the parent resource.
+  string parent_id = 3;
+}
+
+// Response message for ListBooks method.
+message ListBooksResponse {
+  // The list of books.
+  repeated Book results = 1;
+  // Token to retrieve the next page of results.
+  string next_page_token = 2;
+  // Estimated total number of results.
+  int32 total_results_estimate = 3;
+}
+
+// Request message for UpdateBook method.
+message UpdateBookRequest {
+  // The book to be updated.
+  Book book = 1;
+  // The field mask specifying the fields to update.
+  google.protobuf.FieldMask update_mask = 2;
+}
+
+// Response message for UpdateBook method.
+message UpdateBookResponse {
+  // The updated book.
+  Book book = 1;
+}
+
+// Request message for DeleteBook method.
+message DeleteBookRequest {
+  // ID of the book to delete.
+  string id = 1;
+}
+
+// =============================================================================
+// Resource messages
+// =============================================================================
+
+// The Book message represents a book in the library.
+message Book {
+  // Unique identifier for the book.
+  string id = 1;
+  // When the book was created.
+  google.protobuf.Timestamp create_time = 2;
+  // When the book was last updated.
+  google.protobuf.Timestamp update_time = 3;
+}
