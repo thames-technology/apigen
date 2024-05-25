@@ -2,7 +2,6 @@ package template
 
 import (
 	"embed"
-	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -36,7 +35,7 @@ func Write(data *ProtoData, outDir string) error {
 	}
 
 	// Construct the output file path
-	outFilePath := fmt.Sprintf("%s/%s/%s", outDir, strings.ReplaceAll(data.Package, ".", "/"), "service.proto")
+	outFilePath := filepath.Join(outDir, strings.ReplaceAll(data.Package, ".", "/"), "service.proto")
 
 	// Create the directory structure if it doesn't exist
 	if err := os.MkdirAll(filepath.Dir(outFilePath), 0755); err != nil {
