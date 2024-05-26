@@ -8,7 +8,7 @@
 
 ---
 
-<h2 align="center">Generate best-practice Protobuf APIs following design patterns</h2>
+<h2 align="center">Generate standard Protobuf and ts-rest APIs following best-practice design patterns</h2>
 
 <p align="center">
   Inspired by <a href="https://www.oreilly.com/library/view/api-design-patterns/9781617295850/" target="_blank">API Design Patterns</a>
@@ -286,7 +286,10 @@ message Author {
 }
 ```
 
-### TS-REST
+### TypeScript with ts-rest
+
+> [!NOTE]
+> Learn more about ts-rest: <https://ts-rest.com/>
 
 Create `book` contract with `author` parent resource:
 
