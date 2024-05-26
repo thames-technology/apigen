@@ -30,8 +30,10 @@ service BookService {
 
 // Request message for CreateBook method.
 message CreateBookRequest {
+  // UUID used to prevent duplicate requests.
+  optional string request_id = 1;
   // The book to be created.
-  Book book = 1;
+  Book book = 2;
 }
 
 // Response message for CreateBook method.
@@ -43,7 +45,7 @@ message CreateBookResponse {
 // Request message for GetBook method.
 message GetBookRequest {
   // ID of the book to retrieve.
-  string id = 1;
+  string book_id = 1;
 }
 
 // Response message for GetBook method.
@@ -55,11 +57,11 @@ message GetBookResponse {
 // Request message for ListBooks method.
 message ListBooksRequest {
   // The maximum number of books to return.
-  int32 page_size = 1;
+  optional int32 page_size = 1;
   // The token to retrieve the next page of results.
-  string page_token = 2;
-  // The ID of the parent resource.
-  string parent_id = 3;
+  optional string page_token = 2;
+  // ID of the author to list books for.
+  optional string author_id = 3;
 }
 
 // Response message for ListBooks method.
@@ -74,10 +76,14 @@ message ListBooksResponse {
 
 // Request message for UpdateBook method.
 message UpdateBookRequest {
+  // UUID used to prevent duplicate requests.
+  optional string request_id = 1;
+  // ID of the book to update.
+  string book_id = 2;
   // The book to be updated.
-  Book book = 1;
+  Book book = 3;
   // The field mask specifying the fields to update.
-  google.protobuf.FieldMask update_mask = 2;
+  google.protobuf.FieldMask update_mask = 4;
 }
 
 // Response message for UpdateBook method.
@@ -106,4 +112,6 @@ message Book {
   google.protobuf.Timestamp update_time = 3;
   // ID of the author of the book.
   string author_id = 4;
+  // Additional fields for the book.
+  // TODO: Add fields here.
 }

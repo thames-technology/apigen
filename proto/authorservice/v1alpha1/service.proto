@@ -30,8 +30,10 @@ service AuthorService {
 
 // Request message for CreateAuthor method.
 message CreateAuthorRequest {
+  // UUID used to prevent duplicate requests.
+  optional string request_id = 1;
   // The author to be created.
-  Author author = 1;
+  Author author = 2;
 }
 
 // Response message for CreateAuthor method.
@@ -43,7 +45,7 @@ message CreateAuthorResponse {
 // Request message for GetAuthor method.
 message GetAuthorRequest {
   // ID of the author to retrieve.
-  string id = 1;
+  string author_id = 1;
 }
 
 // Response message for GetAuthor method.
@@ -55,11 +57,9 @@ message GetAuthorResponse {
 // Request message for ListAuthors method.
 message ListAuthorsRequest {
   // The maximum number of authors to return.
-  int32 page_size = 1;
+  optional int32 page_size = 1;
   // The token to retrieve the next page of results.
-  string page_token = 2;
-  // The ID of the parent resource.
-  string parent_id = 3;
+  optional string page_token = 2;
 }
 
 // Response message for ListAuthors method.
@@ -74,10 +74,14 @@ message ListAuthorsResponse {
 
 // Request message for UpdateAuthor method.
 message UpdateAuthorRequest {
+  // UUID used to prevent duplicate requests.
+  optional string request_id = 1;
+  // ID of the author to update.
+  string author_id = 2;
   // The author to be updated.
-  Author author = 1;
+  Author author = 3;
   // The field mask specifying the fields to update.
-  google.protobuf.FieldMask update_mask = 2;
+  google.protobuf.FieldMask update_mask = 4;
 }
 
 // Response message for UpdateAuthor method.
@@ -104,4 +108,6 @@ message Author {
   google.protobuf.Timestamp create_time = 2;
   // When the author was last updated.
   google.protobuf.Timestamp update_time = 3;
+  // Additional fields for the author.
+  // TODO: Add fields here.
 }

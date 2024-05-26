@@ -34,8 +34,10 @@ service {{ title $resource }}Service {
 
 // Request message for Create{{ title $resource }} method.
 message Create{{ title $resource }}Request {
+  // UUID used to prevent duplicate requests.
+  optional string request_id = 1;
   // The {{ $resource }} to be created.
-  {{ title $resource }} {{ $resource }} = 1;
+  {{ title $resource }} {{ $resource }} = 2;
 }
 
 // Response message for Create{{ title $resource }} method.
@@ -47,7 +49,7 @@ message Create{{ title $resource }}Response {
 // Request message for Get{{ title $resource }} method.
 message Get{{ title $resource }}Request {
   // ID of the {{ $resource }} to retrieve.
-  string id = 1;
+  string {{ $resource }}_id = 1;
 }
 
 // Response message for Get{{ title $resource }} method.
@@ -59,11 +61,13 @@ message Get{{ title $resource }}Response {
 // Request message for List{{ title $resources }} method.
 message List{{ title $resources }}Request {
   // The maximum number of {{ $resources }} to return.
-  int32 page_size = 1;
+  optional int32 page_size = 1;
   // The token to retrieve the next page of results.
-  string page_token = 2;
-  // The ID of the parent resource.
-  string parent_id = 3;
+  optional string page_token = 2;
+  {{- if and $parent $parents }}
+  // ID of the {{ $parent }} to list {{ $resources }} for.
+  optional string {{ $parent }}_id = 3;
+  {{- end }}
 }
 
 // Response message for List{{ title $resources }} method.
@@ -78,10 +82,14 @@ message List{{ title $resources }}Response {
 
 // Request message for Update{{ title $resource }} method.
 message Update{{ title $resource }}Request {
+  // UUID used to prevent duplicate requests.
+  optional string request_id = 1;
+  // ID of the {{ $resource }} to update.
+  string {{ $resource }}_id = 2;
   // The {{ $resource }} to be updated.
-  {{ title $resource }} {{ $resource }} = 1;
+  {{ title $resource }} {{ $resource }} = 3;
   // The field mask specifying the fields to update.
-  google.protobuf.FieldMask update_mask = 2;
+  google.protobuf.FieldMask update_mask = 4;
 }
 
 // Response message for Update{{ title $resource }} method.
@@ -112,4 +120,6 @@ message {{ title $resource }} {
   // ID of the {{ $parent }} of the {{ $resource }}.
   string {{ $parent }}_id = 4;
   {{- end }}
+  // Additional fields for the {{ $resource }}.
+  // TODO: Add fields here.
 }
