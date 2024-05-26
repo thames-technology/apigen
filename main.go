@@ -53,6 +53,11 @@ func main() {
 						Usage:   "The directory to write the proto files to",
 						Value:   "proto",
 					},
+					&cli.BoolFlag{
+						Name:    "write",
+						Aliases: []string{"w"},
+						Usage:   "Write the output to a file",
+					},
 				},
 				Action: func(c *cli.Context) error {
 					resource := c.String("resource")
@@ -75,7 +80,12 @@ func main() {
 						Package:   c.String("package"),
 					}
 
-					return template.Write(data, c.String("out-dir"))
+					opts := &template.WriteOpts{
+						OutDir: c.String("out-dir"),
+						Write:  c.Bool("write"),
+					}
+
+					return template.Write(data, opts)
 				},
 			},
 		},

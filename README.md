@@ -18,12 +18,28 @@
 
 ## Install
 
+Homebrew:
+
 ```sh
-# TODO
+brew install thames-technology/tap/apigen
+```
+
+Go:
+
+```sh
+go install github.com/thames-technology/apigen
 ```
 
 ## Getting started
 
+Create standard `BookService` definition with `author` parent resource in `proto/bookservice/v1alpha1/service.proto`:
+
 ```sh
-apigen proto -r book -pkg bookservice.v1alpha1
+apigen proto -r book -p author -pkg bookservice.v1alpha1 -w
+```
+
+Create standard `AuthorService` definition without a parent resource in `proto/authorservice/v1alpha1/service.proto`:
+
+```sh
+apigen proto -r author -pkg authorservice.v1alpha1 -w
 ```

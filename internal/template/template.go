@@ -2,6 +2,7 @@ package template
 
 import (
 	"embed"
+	"io"
 	"os"
 	"path/filepath"
 	"strings"
@@ -28,14 +29,18 @@ type ProtoData struct {
 	Package   string
 }
 
-func Write(data *ProtoData, outDir string) error {
-	tmpl, err := template.New("proto").Funcs(funcs).ParseFS(tmplFS, "service.tmpl")
-	if err != nil {
-		return err
+type WriteOpts struct {
+	OutDir string
+	Write  bool
+}
+
+func Write(data *ProtoData, opts *WriteOpts) error {
+	if !opts.Write {
+		return writeTo(os.Stdout, data)
 	}
 
 	// Construct the output file path
-	outFilePath := filepath.Join(outDir, strings.ReplaceAll(data.Package, ".", "/"), "service.proto")
+	outFilePath := filepath.Join(opts.OutDir, strings.ReplaceAll(data.Package, ".", "/"), "service.proto")
 
 	// Create the directory structure if it doesn't exist
 	if err := os.MkdirAll(filepath.Dir(outFilePath), 0755); err != nil {
@@ -49,5 +54,14 @@ func Write(data *ProtoData, outDir string) error {
 	}
 	defer outFile.Close()
 
-	return tmpl.ExecuteTemplate(outFile, "service.tmpl", data)
+	return writeTo(outFile, data)
+}
+
+func writeTo(w io.Writer, data *ProtoData) error {
+	tmpl, err := template.New("proto").Funcs(funcs).ParseFS(tmplFS, "service.tmpl")
+	if err != nil {
+		return err
+	}
+
+	return tmpl.ExecuteTemplate(w, "service.tmpl", data)
 }

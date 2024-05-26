@@ -10,11 +10,12 @@ import (
 )
 
 func TestWrite(t *testing.T) {
+	expectedDir := "../../proto"
+
 	tests := []struct {
-		name        string
-		data        *ProtoData
-		outDir      string
-		expectedDir string
+		name string
+		data *ProtoData
+		opts *WriteOpts
 	}{
 		{
 			name: "Test Book Service",
@@ -25,8 +26,7 @@ func TestWrite(t *testing.T) {
 				Parents:   "authors",
 				Package:   "bookservice.v1alpha1",
 			},
-			outDir:      "testdata",
-			expectedDir: "../../proto",
+			opts: &WriteOpts{Write: true, OutDir: "testdata"},
 		},
 		{
 			name: "Test Author Service",
@@ -35,26 +35,25 @@ func TestWrite(t *testing.T) {
 				Resources: "authors",
 				Package:   "authorservice.v1alpha1",
 			},
-			outDir:      "testdata",
-			expectedDir: "../../proto",
+			opts: &WriteOpts{Write: true, OutDir: "testdata"},
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Ensure the output directory exists
-			if err := os.MkdirAll(tt.outDir, 0755); err != nil {
+			if err := os.MkdirAll(tt.opts.OutDir, 0755); err != nil {
 				t.Fatalf("Failed to create output directory: %v", err)
 			}
 
 			// Run the Write function
-			if err := Write(tt.data, tt.outDir); err != nil {
+			if err := Write(tt.data, tt.opts); err != nil {
 				t.Fatalf("Write() error: %v", err)
 			}
 
 			// Compare the output file with the expected file
-			outputFile := filepath.Join(tt.outDir, strings.ReplaceAll(tt.data.Package, ".", "/"), "service.proto")
-			expectedFile := filepath.Join(tt.expectedDir, strings.ReplaceAll(tt.data.Package, ".", "/"), "service.proto")
+			outputFile := filepath.Join(tt.opts.OutDir, strings.ReplaceAll(tt.data.Package, ".", "/"), "service.proto")
+			expectedFile := filepath.Join(expectedDir, strings.ReplaceAll(tt.data.Package, ".", "/"), "service.proto")
 
 			output, err := os.ReadFile(outputFile)
 			if err != nil {
@@ -71,7 +70,7 @@ func TestWrite(t *testing.T) {
 			}
 
 			// Clean up the output directory
-			os.RemoveAll(tt.outDir)
+			os.RemoveAll(tt.opts.OutDir)
 		})
 	}
 }
