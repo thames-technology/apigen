@@ -11,7 +11,7 @@ import (
 func main() {
 	app := &cli.App{
 		Name:  "apigen",
-		Usage: "Generate Protobuf APIs using design patterns and best practices",
+		Usage: "Generate best-practice Protobuf APIs following design patterns",
 		Commands: []*cli.Command{
 			{
 				Name: "proto",
