@@ -8,10 +8,14 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+// Changed at build time via -ldflags
+var version = "debug"
+
 func main() {
 	app := &cli.App{
-		Name:  "apigen",
-		Usage: "Generate best-practice Protobuf APIs following design patterns",
+		Name:    "apigen",
+		Usage:   "Generate best-practice Protobuf APIs following design patterns",
+		Version: version,
 		Commands: []*cli.Command{
 			{
 				Name: "proto",
