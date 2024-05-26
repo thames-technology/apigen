@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -12,37 +11,43 @@ import (
 func main() {
 	app := &cli.App{
 		Name:  "apigen",
-		Usage: "Generate Protobuf API definitions using best practices",
+		Usage: "Generate Protobuf APIs using design patterns and best practices",
 		Commands: []*cli.Command{
 			{
 				Name: "proto",
 				Flags: []cli.Flag{
 					&cli.StringFlag{
 						Name:     "resource",
+						Aliases:  []string{"r"},
 						Usage:    "The name of the resource, e.g. book",
 						Required: true,
 					},
 					&cli.StringFlag{
-						Name:  "resources",
-						Usage: "The plural name of the resource, e.g. books",
+						Name:    "resources",
+						Aliases: []string{"rs"},
+						Usage:   "The plural name of the resource, e.g. books",
 					},
 					&cli.StringFlag{
-						Name:  "parent",
-						Usage: "The name of the parent resource, e.g. author",
+						Name:    "parent",
+						Aliases: []string{"p"},
+						Usage:   "The name of the parent resource, e.g. author",
 					},
 					&cli.StringFlag{
-						Name:  "parents",
-						Usage: "The plural name of the parent resource, e.g. authors",
+						Name:    "parents",
+						Aliases: []string{"ps"},
+						Usage:   "The plural name of the parent resource, e.g. authors",
 					},
 					&cli.StringFlag{
 						Name:     "package",
+						Aliases:  []string{"pkg"},
 						Usage:    "The package name, e.g. bookservice.v1alpha1",
 						Required: true,
 					},
 					&cli.StringFlag{
-						Name:  "dir",
-						Usage: "The directory to write the proto files to",
-						Value: "proto",
+						Name:    "out-dir",
+						Aliases: []string{"o"},
+						Usage:   "The directory to write the proto files to",
+						Value:   "proto",
 					},
 				},
 				Action: func(c *cli.Context) error {
@@ -66,9 +71,7 @@ func main() {
 						Package:   c.String("package"),
 					}
 
-					fmt.Printf("Data: %+v\n", data)
-
-					return template.Write(data, c.String("dir"))
+					return template.Write(data, c.String("out-dir"))
 				},
 			},
 		},

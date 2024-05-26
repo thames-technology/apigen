@@ -25,8 +25,8 @@ func TestWrite(t *testing.T) {
 				Parents:   "authors",
 				Package:   "bookservice.v1alpha1",
 			},
-			outDir:      "testdata/output",
-			expectedDir: "testdata/expected",
+			outDir:      "testdata",
+			expectedDir: "../../proto",
 		},
 		{
 			name: "Test Author Service",
@@ -35,8 +35,8 @@ func TestWrite(t *testing.T) {
 				Resources: "authors",
 				Package:   "authorservice.v1alpha1",
 			},
-			outDir:      "testdata/output",
-			expectedDir: "testdata/expected",
+			outDir:      "testdata",
+			expectedDir: "../../proto",
 		},
 	}
 

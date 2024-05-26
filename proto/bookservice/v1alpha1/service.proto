@@ -104,4 +104,6 @@ message Book {
   google.protobuf.Timestamp create_time = 2;
   // When the book was last updated.
   google.protobuf.Timestamp update_time = 3;
+  // ID of the author of the book.
+  string author_id = 4;
 }
