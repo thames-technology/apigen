@@ -1,0 +1,129 @@
+{{- $resource := .Resource }}
+{{- $resources := .Resources }}
+{{- $parent := .Parent }}
+{{- $idType := .IdType }}import { initContract } from '@ts-rest/core';
+import { z } from 'zod';
+
+// ====================================================================================================================
+// Schemas
+// ====================================================================================================================
+
+// Timestamps using ISO 8601 format
+const Timestamp = z.string().datetime().describe('ISO 8601 format timestamp');
+
+// {{ title $resource }} schema
+export const {{ title $resource }} = z.object({
+  id: z.string().{{ $idType }}().describe('Unique identifier for the {{ $resource }}'),
+  createTime: Timestamp.describe('When the {{ $resource }} was created'),
+  updateTime: Timestamp.describe('When the {{ $resource }} was last updated'),
+  {{- if $parent }}
+  {{ $parent }}Id: z.string().{{ $idType }}().describe('ID of the {{ $parent }} of the {{ $resource }}'),
+  {{- end }}
+});
+
+// ====================================================================================================================
+// Request and response schemas
+// ====================================================================================================================
+
+export const Create{{ title $resource }}Request = z.object({
+  requestId: z.string().uuid().optional().describe('UUID used to prevent duplicate requests'),
+  {{ $resource }}: {{ title $resource }}.omit({ id: true, createTime: true, updateTime: true }),
+});
+
+export const Create{{ title $resource }}Response = z.object({
+  {{ $resource }}: {{ title $resource }},
+});
+
+export const Get{{ title $resource }}Request = z.object({
+  {{ $resource }}Id: z.string().{{ $idType }}().describe('The unique identifier of the {{ $resource }}'),
+});
+
+export const Get{{ title $resource }}Response = z.object({
+  {{ $resource }}: {{ title $resource }},
+});
+
+export const List{{ title $resources }}Request = z.object({
+  pageSize: z.number().int().min(1).max(1000).default(100).describe('The maximum number of {{ $resources }} to return'),
+  pageToken: z.string().optional().describe('The token to retrieve the next page of results'),
+  {{- if $parent }}
+  {{ $parent }}Id: z.string().{{ $idType }}().optional().describe('The unique identifier of the parent {{ $parent }} resource'),
+  {{- end }}
+});
+
+export const List{{ title $resources }}Response = z.object({
+  results: z.array({{ title $resource }}).describe('The list of {{ $resources }}'),
+  nextPageToken: z.string().{{ $idType }}().nullish().describe('The token to retrieve the next page of items'),
+  totalResultsEstimate: z.number().int().min(0).describe('The estimated total number of results'),
+});
+
+export const Update{{ title $resource }}Request = z.object({
+  requestId: z.string().uuid().optional().describe('UUID used to prevent duplicate requests'),
+  {{ $resource }}Id: z.string().{{ $idType }}().describe('The unique identifier of the {{ $resource }} to update'),
+  {{ $resource }}: {{ title $resource }}.omit({ id: true, createTime: true, updateTime: true }).partial(),
+});
+
+export const Update{{ title $resource }}Response = z.object({
+  {{ $resource }}: {{ title $resource }},
+});
+
+export const Delete{{ title $resource }}Request = z.object({
+  {{ $resource }}Id: z.string().{{ $idType }}().describe('The unique identifier of the {{ $resource }} to delete'),
+});
+
+export const Delete{{ title $resource }}Response = z.null();
+
+// ====================================================================================================================
+// Contracts
+// ====================================================================================================================
+
+const c = initContract();
+
+export const {{ title $resource }}ServiceContract = c.router({
+  create{{ title $resource }}: {
+    method: 'POST',
+    path: '/{{ $resources }}',
+    body: Create{{ title $resource }}Request,
+    responses: {
+      201: Create{{ title $resource }}Response,
+    },
+    summary: 'Create a {{ $resource }}',
+  },
+  get{{ title $resource }}: {
+    method: 'GET',
+    path: '/{{ $resources }}/:{{ $resource }}Id',
+    pathParams: Get{{ title $resource }}Request,
+    responses: {
+      200: Get{{ title $resource }}Response,
+    },
+    summary: 'Get a {{ $resource }} by ID',
+  },
+  list{{ title $resources }}: {
+    method: 'GET',
+    path: '/{{ $resources }}',
+    query: List{{ title $resources }}Request,
+    responses: {
+      200: List{{ title $resources }}Response,
+    },
+    summary: 'List all {{ $resources }}',
+  },
+  update{{ title $resource }}: {
+    method: 'PATCH',
+    path: '/{{ $resources }}/:{{ $resource }}Id',
+    pathParams: Update{{ title $resource }}Request.pick({ {{ $resource }}Id: true }),
+    body: Update{{ title $resource }}Request.omit({ {{ $resource }}Id: true }),
+    responses: {
+      200: Update{{ title $resource }}Response,
+    },
+    summary: 'Update a {{ $resource }}',
+  },
+  delete{{ title $resource }}: {
+    method: 'DELETE',
+    path: '/{{ $resources }}/:{{ $resource }}Id',
+    pathParams: Delete{{ title $resource }}Request,
+    body: z.null(), // No body, but we need to specify it as null
+    responses: {
+      204: Delete{{ title $resource }}Response,
+    },
+    summary: 'Delete a {{ $resource }}',
+  },
+});

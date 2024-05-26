@@ -1,7 +1,6 @@
 {{- $resource := .Resource }}
 {{- $resources := .Resources }}
 {{- $parent := .Parent }}
-{{- $parents := .Parents }}
 {{- $package := .Package }}syntax = "proto3";
 
 package {{ $package }};
@@ -64,7 +63,7 @@ message List{{ title $resources }}Request {
   optional int32 page_size = 1;
   // The token to retrieve the next page of results.
   optional string page_token = 2;
-  {{- if and $parent $parents }}
+  {{- if $parent }}
   // ID of the {{ $parent }} to list {{ $resources }} for.
   optional string {{ $parent }}_id = 3;
   {{- end }}
@@ -116,7 +115,7 @@ message {{ title $resource }} {
   google.protobuf.Timestamp create_time = 2;
   // When the {{ $resource }} was last updated.
   google.protobuf.Timestamp update_time = 3;
-  {{- if and $parent $parents }}
+  {{- if $parent }}
   // ID of the {{ $parent }} of the {{ $resource }}.
   string {{ $parent }}_id = 4;
   {{- end }}

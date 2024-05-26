@@ -1,76 +1,166 @@
 package template
 
 import (
+	"bytes"
 	"os"
 	"path/filepath"
-	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestWrite(t *testing.T) {
-	expectedDir := "../../proto"
-
+func TestWriteTsRest(t *testing.T) {
 	tests := []struct {
-		name string
-		data *ProtoData
-		opts *WriteOpts
+		name             string
+		data             *TsRestTmplData
+		fileName         string
+		expectedFilePath string
 	}{
 		{
-			name: "Test Book Service",
-			data: &ProtoData{
+			name: "basic test with ulid",
+			data: &TsRestTmplData{
 				Resource:  "book",
 				Resources: "books",
 				Parent:    "author",
-				Parents:   "authors",
-				Package:   "bookservice.v1alpha1",
+				IdType:    "ulid",
 			},
-			opts: &WriteOpts{Write: true, OutDir: "testdata"},
+			fileName:         "bookContract.ts",
+			expectedFilePath: "../../examples/ts-rest/contracts/bookContract.ts",
 		},
 		{
-			name: "Test Author Service",
-			data: &ProtoData{
+			name: "test without parent",
+			data: &TsRestTmplData{
 				Resource:  "author",
 				Resources: "authors",
-				Package:   "authorservice.v1alpha1",
+				IdType:    "uuid",
 			},
-			opts: &WriteOpts{Write: true, OutDir: "testdata"},
+			fileName:         "authorContract.ts",
+			expectedFilePath: "../../examples/ts-rest/contracts/authorContract.ts",
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			// Ensure the output directory exists
-			if err := os.MkdirAll(tt.opts.OutDir, 0755); err != nil {
-				t.Fatalf("Failed to create output directory: %v", err)
-			}
+			t.Run("write to stdout", func(t *testing.T) {
+				var buf bytes.Buffer
+				opts := &WriteOpts{Writer: &buf}
 
-			// Run the Write function
-			if err := Write(tt.data, tt.opts); err != nil {
-				t.Fatalf("Write() error: %v", err)
-			}
+				err := WriteTsRest(tt.data, opts)
+				if err != nil {
+					t.Fatalf("WriteTsRest() error: %v", err)
+				}
 
-			// Compare the output file with the expected file
-			outputFile := filepath.Join(tt.opts.OutDir, strings.ReplaceAll(tt.data.Package, ".", "/"), "service.proto")
-			expectedFile := filepath.Join(expectedDir, strings.ReplaceAll(tt.data.Package, ".", "/"), "service.proto")
+				expectedOutput, err := os.ReadFile(tt.expectedFilePath)
+				if err != nil {
+					t.Fatalf("Error reading expected output file: %v", err)
+				}
 
-			output, err := os.ReadFile(outputFile)
-			if err != nil {
-				t.Fatalf("Failed to read output file: %v", err)
-			}
+				if diff := cmp.Diff(string(expectedOutput), buf.String()); diff != "" {
+					t.Fatalf("Mismatch (-want +got):\n%s", diff)
+				}
+			})
 
-			expected, err := os.ReadFile(expectedFile)
-			if err != nil {
-				t.Fatalf("Failed to read expected file: %v", err)
-			}
+			t.Run("write to file", func(t *testing.T) {
+				tmpDir := t.TempDir()
+				opts := &WriteOpts{OutDir: tmpDir}
 
-			if diff := cmp.Diff(string(output), string(expected)); diff != "" {
-				t.Errorf("Mismatch (-output +expected):\n%s", diff)
-			}
+				err := WriteTsRest(tt.data, opts)
+				if err != nil {
+					t.Fatalf("WriteTsRest() error: %v", err)
+				}
 
-			// Clean up the output directory
-			os.RemoveAll(tt.opts.OutDir)
+				content, err := os.ReadFile(filepath.Join(tmpDir, tt.fileName))
+				if err != nil {
+					t.Fatalf("Error reading output file: %v", err)
+				}
+
+				expectedOutput, err := os.ReadFile(tt.expectedFilePath)
+				if err != nil {
+					t.Fatalf("Error reading expected output file: %v", err)
+				}
+
+				if diff := cmp.Diff(string(expectedOutput), string(content)); diff != "" {
+					t.Fatalf("Mismatch (-want +got):\n%s", diff)
+				}
+			})
+		})
+	}
+}
+
+func TestWriteProto(t *testing.T) {
+	tests := []struct {
+		name             string
+		data             *ProtoTmplData
+		fileName         string
+		expectedFilePath string
+	}{
+		{
+			name: "basic test",
+			data: &ProtoTmplData{
+				Resource:  "book",
+				Resources: "books",
+				Parent:    "author",
+				Package:   "bookservice.v1alpha1",
+			},
+			fileName:         "bookservice/v1alpha1/service.proto",
+			expectedFilePath: "../../examples/proto/bookservice/v1alpha1/service.proto",
+		},
+		{
+			name: "test without parent",
+			data: &ProtoTmplData{
+				Resource:  "author",
+				Resources: "authors",
+				Package:   "authorservice.v1alpha1",
+			},
+			fileName:         "authorservice/v1alpha1/service.proto",
+			expectedFilePath: "../../examples/proto/authorservice/v1alpha1/service.proto",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Run("write to stdout", func(t *testing.T) {
+				var buf bytes.Buffer
+				opts := &WriteOpts{Writer: &buf}
+
+				err := WriteProto(tt.data, opts)
+				if err != nil {
+					t.Fatalf("WriteProto() error: %v", err)
+				}
+
+				expectedOutput, err := os.ReadFile(tt.expectedFilePath)
+				if err != nil {
+					t.Fatalf("Error reading expected output file: %v", err)
+				}
+
+				if diff := cmp.Diff(string(expectedOutput), buf.String()); diff != "" {
+					t.Fatalf("Mismatch (-want +got):\n%s", diff)
+				}
+			})
+
+			t.Run("write to file", func(t *testing.T) {
+				tmpDir := t.TempDir()
+				opts := &WriteOpts{OutDir: tmpDir}
+
+				err := WriteProto(tt.data, opts)
+				if err != nil {
+					t.Fatalf("WriteProto() error: %v", err)
+				}
+
+				content, err := os.ReadFile(filepath.Join(tmpDir, tt.fileName))
+				if err != nil {
+					t.Fatalf("Error reading output file: %v", err)
+				}
+
+				expectedOutput, err := os.ReadFile(tt.expectedFilePath)
+				if err != nil {
+					t.Fatalf("Error reading expected output file: %v", err)
+				}
+
+				if diff := cmp.Diff(string(expectedOutput), string(content)); diff != "" {
+					t.Fatalf("Mismatch (-want +got):\n%s", diff)
+				}
+			})
 		})
 	}
 }

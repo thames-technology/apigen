@@ -2,6 +2,7 @@ package template
 
 import (
 	"embed"
+	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -12,7 +13,7 @@ import (
 	"golang.org/x/text/language"
 )
 
-//go:embed service.tmpl
+//go:embed proto/*.tmpl ts-rest/*.tmpl
 var tmplFS embed.FS
 
 var caser = cases.Title(language.Und)
@@ -21,47 +22,77 @@ var funcs = template.FuncMap{
 	"title": caser.String,
 }
 
-type ProtoData struct {
+type ProtoTmplData struct {
 	Resource  string
 	Resources string
 	Parent    string
-	Parents   string
 	Package   string
+}
+
+type TsRestTmplData struct {
+	Resource  string
+	Resources string
+	Parent    string
+	IdType    string
 }
 
 type WriteOpts struct {
 	OutDir string
-	Write  bool
+	Writer io.Writer
 }
 
-func Write(data *ProtoData, opts *WriteOpts) error {
-	if !opts.Write {
-		return writeTo(os.Stdout, data)
+func WriteTsRest(data *TsRestTmplData, opts *WriteOpts) error {
+	if opts.Writer != nil {
+		return writeTsRestTo(opts.Writer, data)
 	}
 
-	// Construct the output file path
-	outFilePath := filepath.Join(opts.OutDir, strings.ReplaceAll(data.Package, ".", "/"), "service.proto")
-
-	// Create the directory structure if it doesn't exist
+	outFilePath := filepath.Join(opts.OutDir, fmt.Sprintf("%sContract.ts", data.Resource))
 	if err := os.MkdirAll(filepath.Dir(outFilePath), 0755); err != nil {
 		return err
 	}
 
-	// Create the output file
 	outFile, err := os.Create(outFilePath)
 	if err != nil {
 		return err
 	}
 	defer outFile.Close()
 
-	return writeTo(outFile, data)
+	return writeTsRestTo(outFile, data)
 }
 
-func writeTo(w io.Writer, data *ProtoData) error {
-	tmpl, err := template.New("proto").Funcs(funcs).ParseFS(tmplFS, "service.tmpl")
+func writeTsRestTo(w io.Writer, data *TsRestTmplData) error {
+	tmpl, err := template.New("ts-rest").Funcs(funcs).ParseFS(tmplFS, "ts-rest/contract.ts.tmpl")
 	if err != nil {
 		return err
 	}
 
-	return tmpl.ExecuteTemplate(w, "service.tmpl", data)
+	return tmpl.ExecuteTemplate(w, "contract.ts.tmpl", data)
+}
+
+func WriteProto(data *ProtoTmplData, opts *WriteOpts) error {
+	if opts.Writer != nil {
+		return writeProtoTo(opts.Writer, data)
+	}
+
+	outFilePath := filepath.Join(opts.OutDir, strings.ReplaceAll(data.Package, ".", "/"), "service.proto")
+	if err := os.MkdirAll(filepath.Dir(outFilePath), 0755); err != nil {
+		return err
+	}
+
+	outFile, err := os.Create(outFilePath)
+	if err != nil {
+		return err
+	}
+	defer outFile.Close()
+
+	return writeProtoTo(outFile, data)
+}
+
+func writeProtoTo(w io.Writer, data *ProtoTmplData) error {
+	tmpl, err := template.New("proto").Funcs(funcs).ParseFS(tmplFS, "proto/service.proto.tmpl")
+	if err != nil {
+		return err
+	}
+
+	return tmpl.ExecuteTemplate(w, "service.proto.tmpl", data)
 }
